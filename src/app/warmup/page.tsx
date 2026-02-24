@@ -1,24 +1,33 @@
 "use client";
 
+import { useEffect, useRef, useCallback } from "react";
 import { useWarmupStore } from "@/stores/warmup-store";
 import { CategoryPicker } from "@/components/warmup/category-picker";
 import { ChallengeDisplay } from "@/components/warmup/challenge-display";
 import { ResponseInput } from "@/components/warmup/response-input";
 import { TimerDisplay } from "@/components/warmup/timer-display";
 import { FeedbackDisplay } from "@/components/warmup/feedback-display";
-import { Brain, Loader2, RotateCcw, AlertTriangle, Zap, CheckCircle2, Trophy } from "lucide-react";
-import type { WarmupCategory } from "@/types/warmup";
+import { Brain, Loader2, RotateCcw, AlertTriangle, Zap, Trophy } from "lucide-react";
+import type { WarmupCategory, WarmupChallenge } from "@/types/warmup";
+import { ALL_CATEGORIES } from "@/types/warmup";
 import Link from "next/link";
+
+const PREFETCH_TARGET = 5;
+const PREFETCH_DELAY_MS = 600; // delay between sequential fetches to avoid rate limiting
 
 export default function WarmupPage() {
   const store = useWarmupStore();
+  const prefetchAbortRef = useRef<AbortController | null>(null);
+  const prefetchingRef = useRef(false);
 
-  const generateChallenge = async (category: WarmupCategory) => {
+  // Fetch a single challenge from API
+  const fetchChallenge = useCallback(async (category: WarmupCategory, signal?: AbortSignal): Promise<WarmupChallenge | null> => {
     try {
       const res = await fetch("/api/ai/warmup/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ category, difficulty: 1 }),
+        signal,
       });
 
       if (!res.ok) {
@@ -27,15 +36,106 @@ export default function WarmupPage() {
       }
 
       const data = await res.json();
-
-      store.setChallengeActive({
+      return {
         id: data.id,
         challengeText: data.challengeText,
         timeLimitSeconds: data.timeLimitSeconds,
         category: data.category,
         difficultyLevel: data.difficultyLevel,
-      });
-      store.startTimer();
+      };
+    } catch (error) {
+      if (error instanceof DOMException && error.name === "AbortError") return null;
+      console.error(`Prefetch failed for ${category}:`, error);
+      return null;
+    }
+  }, []);
+
+  // Prefetch challenges for a single category up to target
+  const prefetchCategory = useCallback(async (category: WarmupCategory, signal: AbortSignal) => {
+    const storeState = useWarmupStore.getState();
+    const currentCount = storeState.prefetchedChallenges[category].length;
+    const needed = PREFETCH_TARGET - currentCount;
+
+    if (needed <= 0) return;
+
+    storeState.setPrefetchLoading(category, true);
+
+    for (let i = 0; i < needed; i++) {
+      if (signal.aborted) break;
+
+      const challenge = await fetchChallenge(category, signal);
+      if (challenge && !signal.aborted) {
+        useWarmupStore.getState().addPrefetchedChallenge(category, challenge);
+      }
+
+      // Small delay between fetches to avoid rate limiting
+      if (i < needed - 1 && !signal.aborted) {
+        await new Promise((r) => setTimeout(r, PREFETCH_DELAY_MS));
+      }
+    }
+
+    if (!signal.aborted) {
+      useWarmupStore.getState().setPrefetchLoading(category, false);
+    }
+  }, [fetchChallenge]);
+
+  // Background prefetch: fire on mount, fills all categories
+  useEffect(() => {
+    if (prefetchingRef.current) return;
+    prefetchingRef.current = true;
+
+    const abortController = new AbortController();
+    prefetchAbortRef.current = abortController;
+
+    // Launch prefetch for all categories in parallel (3 streams)
+    // Each stream fetches sequentially within its category
+    const prefetchAll = async () => {
+      const streams = ALL_CATEGORIES.map((cat) =>
+        prefetchCategory(cat, abortController.signal)
+      );
+      await Promise.allSettled(streams);
+    };
+
+    prefetchAll();
+
+    return () => {
+      abortController.abort();
+      prefetchingRef.current = false;
+    };
+  }, [prefetchCategory]);
+
+  // Backfill a single slot after consuming a prefetched challenge
+  const backfillCategory = useCallback((category: WarmupCategory) => {
+    const abortController = new AbortController();
+    // Fire and forget — fetch one more challenge in the background
+    fetchChallenge(category, abortController.signal).then((challenge) => {
+      if (challenge) {
+        useWarmupStore.getState().addPrefetchedChallenge(category, challenge);
+      }
+    });
+  }, [fetchChallenge]);
+
+  // Generate challenge: try prefetch queue first, fall back to live fetch
+  const generateChallenge = async (category: WarmupCategory) => {
+    try {
+      // Try consuming from prefetch queue (instant)
+      const prefetched = store.consumePrefetched(category);
+      if (prefetched) {
+        store.setChallengeActive(prefetched);
+        store.startTimer();
+        // Backfill the consumed slot
+        backfillCategory(category);
+        return;
+      }
+
+      // Fall back to live API call
+      const challenge = await fetchChallenge(category);
+      if (challenge) {
+        store.setChallengeActive(challenge);
+        store.startTimer();
+      } else {
+        throw new Error("Failed to generate challenge");
+      }
     } catch (error) {
       console.error("Failed to generate challenge:", error);
       store.setError(
@@ -108,6 +208,11 @@ export default function WarmupPage() {
     }
   };
 
+  // Derive ready counts for the category picker
+  const readyCounts = Object.fromEntries(
+    ALL_CATEGORIES.map((cat) => [cat, store.prefetchedChallenges[cat].length])
+  ) as Record<WarmupCategory, number>;
+
   return (
     <div className="max-w-2xl mx-auto space-y-6">
       {/* Header */}
@@ -153,7 +258,11 @@ export default function WarmupPage() {
 
       {/* State machine rendering */}
       {store.state === "selecting_category" && (
-        <CategoryPicker onSelect={handleCategorySelect} />
+        <CategoryPicker
+          onSelect={handleCategorySelect}
+          readyCounts={readyCounts}
+          prefetchLoading={store.prefetchLoading}
+        />
       )}
 
       {store.state === "generating" && (

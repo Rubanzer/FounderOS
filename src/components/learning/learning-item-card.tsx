@@ -50,16 +50,24 @@ export function LearningItemCard({ item, onLogSession, onUpdateStatus }: Learnin
   const TypeIcon = TYPE_ICONS[item.type] || FileText;
   const statusConfig = STATUS_CONFIG[item.status] || STATUS_CONFIG.not_started;
   const StatusIcon = statusConfig.icon;
+  const isVideo = item.type === "video";
 
   return (
     <div className="px-5 py-3 hover:bg-surface-hover/50 transition-colors">
       <div className="flex items-start gap-4">
-        <TypeIcon className="w-4 h-4 text-muted shrink-0 mt-1" />
+        <TypeIcon className={`w-4 h-4 shrink-0 mt-1 ${isVideo ? "text-red-500" : "text-muted"}`} />
 
         <div className="flex-1 min-w-0">
           <div className="flex items-start justify-between gap-3">
             <div className="min-w-0">
-              <p className="text-sm font-medium">{item.title}</p>
+              <div className="flex items-center gap-2">
+                <p className="text-sm font-medium">{item.title}</p>
+                {isVideo && (
+                  <span className="text-[10px] px-1.5 py-0.5 rounded bg-red-600/10 text-red-600 dark:text-red-400 font-semibold shrink-0">
+                    VIDEO
+                  </span>
+                )}
+              </div>
               <p className="text-xs text-muted mt-0.5">
                 {SKILL_AREA_LABELS[item.skillArea as SkillArea] || item.skillArea}
                 {item.estimatedMinutes && ` · ${item.estimatedMinutes}m`}
@@ -76,10 +84,10 @@ export function LearningItemCard({ item, onLogSession, onUpdateStatus }: Learnin
                   href={item.sourceUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-muted hover:text-foreground transition-colors"
-                  title="Open resource"
+                  className={`transition-colors ${isVideo ? "text-red-500 hover:text-red-600" : "text-muted hover:text-foreground"}`}
+                  title={isVideo ? "Watch video" : "Open resource"}
                 >
-                  <ExternalLink className="w-3.5 h-3.5" />
+                  {isVideo ? <PlayCircle className="w-3.5 h-3.5" /> : <ExternalLink className="w-3.5 h-3.5" />}
                 </a>
               )}
 

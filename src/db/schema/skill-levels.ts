@@ -4,6 +4,9 @@ export type WarmupDifficulty = {
   logical_reasoning: number;
   mental_math: number;
   estimation_fermi: number;
+  systems_design: number;
+  strategic_thinking: number;
+  product_sense: number;
 };
 
 export const skillLevels = pgTable("skill_levels", {
@@ -14,6 +17,9 @@ export const skillLevels = pgTable("skill_levels", {
     logical_reasoning: 1,
     mental_math: 1,
     estimation_fermi: 1,
+    systems_design: 1,
+    strategic_thinking: 1,
+    product_sense: 1,
   }),
   rollingAccuracy: real("rolling_accuracy").default(0),
   totalSessions: integer("total_sessions").default(0),

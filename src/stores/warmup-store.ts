@@ -2,6 +2,13 @@
 
 import { create } from "zustand";
 import type { WarmupCategory, WarmupState, WarmupChallenge, WarmupFeedback } from "@/types/warmup";
+import { ALL_CATEGORIES } from "@/types/warmup";
+
+const MAX_PREFETCH_PER_CATEGORY = 5;
+
+function emptyPrefetchMap<T>(val: T): Record<WarmupCategory, T> {
+  return Object.fromEntries(ALL_CATEGORIES.map((c) => [c, val])) as Record<WarmupCategory, T>;
+}
 
 interface WarmupStore {
   state: WarmupState;
@@ -14,6 +21,10 @@ interface WarmupStore {
   sessionCount: number;
   sessionScores: { score: number; isCorrect: boolean }[];
 
+  // Prefetch state
+  prefetchedChallenges: Record<WarmupCategory, WarmupChallenge[]>;
+  prefetchLoading: Record<WarmupCategory, boolean>;
+
   selectCategory: (category: WarmupCategory) => void;
   setGenerating: () => void;
   setChallengeActive: (challenge: WarmupChallenge) => void;
@@ -24,6 +35,12 @@ interface WarmupStore {
   backToChallengeActive: () => void;
   nextChallenge: () => void;
   reset: () => void;
+
+  // Prefetch actions
+  addPrefetchedChallenge: (category: WarmupCategory, challenge: WarmupChallenge) => void;
+  consumePrefetched: (category: WarmupCategory) => WarmupChallenge | null;
+  setPrefetchLoading: (category: WarmupCategory, loading: boolean) => void;
+  getPrefetchCount: (category: WarmupCategory) => number;
 
   startTimer: () => void;
   stopTimer: () => void;
@@ -40,6 +57,10 @@ export const useWarmupStore = create<WarmupStore>((set, get) => ({
   error: null,
   sessionCount: 0,
   sessionScores: [],
+
+  // Prefetch state
+  prefetchedChallenges: emptyPrefetchMap<WarmupChallenge[]>([]),
+  prefetchLoading: emptyPrefetchMap(false),
 
   selectCategory: (category) =>
     set({ selectedCategory: category, state: "selecting_category" }),
@@ -97,6 +118,46 @@ export const useWarmupStore = create<WarmupStore>((set, get) => ({
       sessionCount: 0,
       sessionScores: [],
     });
+  },
+
+  // Prefetch actions
+  addPrefetchedChallenge: (category, challenge) => {
+    set((state) => {
+      const current = state.prefetchedChallenges[category];
+      if (current.length >= MAX_PREFETCH_PER_CATEGORY) return state;
+      return {
+        prefetchedChallenges: {
+          ...state.prefetchedChallenges,
+          [category]: [...current, challenge],
+        },
+      };
+    });
+  },
+
+  consumePrefetched: (category) => {
+    const current = get().prefetchedChallenges[category];
+    if (current.length === 0) return null;
+    const [first, ...rest] = current;
+    set((state) => ({
+      prefetchedChallenges: {
+        ...state.prefetchedChallenges,
+        [category]: rest,
+      },
+    }));
+    return first;
+  },
+
+  setPrefetchLoading: (category, loading) => {
+    set((state) => ({
+      prefetchLoading: {
+        ...state.prefetchLoading,
+        [category]: loading,
+      },
+    }));
+  },
+
+  getPrefetchCount: (category) => {
+    return get().prefetchedChallenges[category].length;
   },
 
   startTimer: () => {

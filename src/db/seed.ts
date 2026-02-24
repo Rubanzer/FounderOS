@@ -30,7 +30,7 @@ const CURRICULUM = [
     skillArea: "clear_thinking",
     estimatedMinutes: 480,
     description: "The definitive guide to cognitive biases and dual-process thinking. Understand System 1 vs System 2 to catch your own blind spots as a founder.",
-    sourceUrl: "https://www.amazon.com/Thinking-Fast-Slow-Daniel-Kahneman/dp/0374533555",
+    sourceUrl: "https://www.youtube.com/watch?v=CjVQJdIrDJ0",
   },
   {
     title: "Good Strategy Bad Strategy — Richard Rumelt",
@@ -39,7 +39,7 @@ const CURRICULUM = [
     skillArea: "clear_thinking",
     estimatedMinutes: 360,
     description: "Learn to distinguish real strategy from fluff. Rumelt's kernel of strategy (diagnosis, guiding policy, coherent action) applies directly to startup positioning.",
-    sourceUrl: "https://www.amazon.com/Good-Strategy-Bad-Difference-Matters/dp/0307886239",
+    sourceUrl: "https://www.youtube.com/watch?v=UZrTl16hZdk",
   },
   {
     title: "Practice: Decision Journal — daily 15 min",
@@ -92,7 +92,7 @@ const CURRICULUM = [
     skillArea: "data_architecture",
     estimatedMinutes: 240,
     description: "Dimensional modeling fundamentals — star schemas, fact tables, dimension tables. The standard approach for analytical data warehouses that powers most BI tools.",
-    sourceUrl: "https://www.amazon.com/Data-Warehouse-Toolkit-Definitive-Dimensional/dp/1118530802",
+    sourceUrl: "https://www.kimballgroup.com/data-warehouse-business-intelligence-resources/kimball-techniques/dimensional-modeling-techniques/",
   },
   {
     title: "Fundamentals of Data Engineering — Reis & Housley (Storage & Serving chapters)",
@@ -101,7 +101,7 @@ const CURRICULUM = [
     skillArea: "data_architecture",
     estimatedMinutes: 300,
     description: "Modern data engineering patterns. Covers the full lifecycle from ingestion to serving, with focus on storage formats and serving layer architecture.",
-    sourceUrl: "https://www.amazon.com/Fundamentals-Data-Engineering-Robust-Systems/dp/1098108302",
+    sourceUrl: "https://www.oreilly.com/library/view/fundamentals-of-data/9781098108298/",
   },
   {
     title: "Study: OLTP vs OLAP, columnar storage, Parquet/Arrow/DuckDB",
@@ -174,7 +174,7 @@ const CURRICULUM = [
     skillArea: "spec_writing",
     estimatedMinutes: 180,
     description: "Concise business writing principles. As a solo founder, every spec, email, and doc you write needs to be crystal clear. This book teaches economy of words.",
-    sourceUrl: "https://www.amazon.com/Writing-That-Works-Communicate-Effectively/dp/0060956437",
+    sourceUrl: "https://paulgraham.com/writing44.html",
   },
   {
     title: "Study: Amazon 6-pager format and PRFAQ",
@@ -219,7 +219,7 @@ const CURRICULUM = [
     skillArea: "product_thinking",
     estimatedMinutes: 360,
     description: "The product management bible. Covers discovery, delivery, and how the best product teams work. Especially relevant: continuous discovery and outcome-driven development.",
-    sourceUrl: "https://www.amazon.com/INSPIRED-Create-Tech-Products-Customers/dp/1119387507",
+    sourceUrl: "https://www.svpg.com/inspired-how-to-create-tech-products-customers-love/",
   },
   {
     title: "Obviously Awesome — April Dunford",
@@ -228,7 +228,7 @@ const CURRICULUM = [
     skillArea: "product_thinking",
     estimatedMinutes: 180,
     description: "A step-by-step framework for product positioning. Helps you nail who your product is for, what makes it different, and how to communicate that — critical for a BI startup.",
-    sourceUrl: "https://www.amazon.com/Obviously-Awesome-Product-Positioning-Customers/dp/1999023005",
+    sourceUrl: "https://www.aprildunford.com/books",
   },
   {
     title: "The Mom Test — Rob Fitzpatrick",
@@ -237,7 +237,7 @@ const CURRICULUM = [
     skillArea: "product_thinking",
     estimatedMinutes: 120,
     description: "How to talk to customers without leading them. Learn to ask questions that even your mom can't lie about. Essential before building any feature.",
-    sourceUrl: "https://www.amazon.com/Mom-Test-customers-business-everyone/dp/1492180742",
+    sourceUrl: "https://www.momtestbook.com/",
   },
   {
     title: "Study: BI buyer personas (analyst, business user, executive, data engineer)",
@@ -291,7 +291,7 @@ const CURRICULUM = [
     skillArea: "system_design",
     estimatedMinutes: 360,
     description: "Architecture styles (layered, microservices, event-driven) and trade-off analysis. Chapters 1-8 give you the vocabulary to reason about system design decisions.",
-    sourceUrl: "https://www.amazon.com/Fundamentals-Software-Architecture-Comprehensive-Characteristics/dp/1492043451",
+    sourceUrl: "https://www.developertoarchitect.com/lessons/",
   },
   {
     title: "A Philosophy of Software Design — Ousterhout",
@@ -300,7 +300,7 @@ const CURRICULUM = [
     skillArea: "system_design",
     estimatedMinutes: 180,
     description: "Deep modules, information hiding, and complexity management. The best short book on software design — directly applicable to keeping your codebase maintainable as a solo founder.",
-    sourceUrl: "https://www.amazon.com/Philosophy-Software-Design-2nd/dp/173210221X",
+    sourceUrl: "https://www.youtube.com/watch?v=bmSAYlu0NcY",
   },
   {
     title: "Study: Multi-tenancy patterns (shared DB/schema, separate DB, cost vs isolation)",
@@ -368,7 +368,7 @@ const CURRICULUM = [
     skillArea: "metrics",
     estimatedMinutes: 300,
     description: "Metrics-driven startup management. Covers the One Metric That Matters (OMTM), lean startup stages, and which metrics to focus on at each stage.",
-    sourceUrl: "https://www.amazon.com/Lean-Analytics-Better-Startup-Faster/dp/1449335675",
+    sourceUrl: "https://leananalyticsbook.com/",
   },
   {
     title: "Measure What Matters — John Doerr",
@@ -377,7 +377,7 @@ const CURRICULUM = [
     skillArea: "metrics",
     estimatedMinutes: 240,
     description: "OKR framework from the investor who brought it to Google. Learn to set objectives and key results that actually drive outcomes, not just activity.",
-    sourceUrl: "https://www.amazon.com/Measure-What-Matters-Google-Foundation/dp/0525536221",
+    sourceUrl: "https://www.youtube.com/watch?v=L4N1q4RNi9I",
   },
   {
     title: "Study: SaaS metrics — MRR, ARR, churn, LTV, CAC, NRR, payback period",
@@ -558,7 +558,7 @@ const CURRICULUM = [
     skillArea: "fundraising",
     estimatedMinutes: 300,
     description: "The definitive guide to venture capital mechanics. Covers term sheets, board seats, liquidation preferences, and how VCs actually think. Read before any fundraise.",
-    sourceUrl: "https://www.amazon.com/Venture-Deals-Smarter-Lawyer-Capitalist/dp/1119594820",
+    sourceUrl: "https://venturedeals.techstars.com/",
   },
   {
     title: "Study: Cap tables, dilution, term sheets",
@@ -586,7 +586,7 @@ const CURRICULUM = [
     skillArea: "hiring",
     estimatedMinutes: 240,
     description: "How to design team structures that optimize for fast flow of change. Four fundamental team types (stream-aligned, platform, enabling, complicated-subsystem) and when to use each.",
-    sourceUrl: "https://www.amazon.com/Team-Topologies-Organizing-Business-Technology/dp/1942788819",
+    sourceUrl: "https://teamtopologies.com/",
   },
   {
     title: "Study: When to hire first engineer vs keep orchestrating with AI",
@@ -614,7 +614,7 @@ const CURRICULUM = [
     skillArea: "devops",
     estimatedMinutes: 240,
     description: "Research-backed guide to high-performing engineering organizations. The four key metrics (lead time, deploy frequency, MTTR, change failure rate) you should track from day one.",
-    sourceUrl: "https://www.amazon.com/Accelerate-Software-Performing-Technology-Organizations/dp/1942788339",
+    sourceUrl: "https://dora.dev/",
   },
   {
     title: "Study: CI/CD pipeline — build, test, scan, deploy, smoke test, monitor",
@@ -672,7 +672,7 @@ const CURRICULUM = [
     skillArea: "communication",
     estimatedMinutes: 240,
     description: "Why some ideas stick and others don't. The SUCCESs framework (Simple, Unexpected, Concrete, Credible, Emotional, Stories) applies to pitches, marketing, and team communication.",
-    sourceUrl: "https://www.amazon.com/Made-Stick-Ideas-Survive-Others/dp/1400064287",
+    sourceUrl: "https://heathbrothers.com/books/made-to-stick/",
   },
   {
     title: "The Pyramid Principle — Barbara Minto",
@@ -681,7 +681,7 @@ const CURRICULUM = [
     skillArea: "communication",
     estimatedMinutes: 180,
     description: "Structure any communication top-down: lead with the answer, then support with grouped arguments. The McKinsey standard for clear business writing and presentations.",
-    sourceUrl: "https://www.amazon.com/Pyramid-Principle-Logic-Writing-Thinking/dp/0273710516",
+    sourceUrl: "https://medium.com/lessons-from-mckinsey/the-pyramid-principle-f0885afa6d46",
   },
   {
     title: "Practice: Record yourself in meetings, listen back, iterate",
@@ -690,6 +690,251 @@ const CURRICULUM = [
     skillArea: "communication",
     estimatedMinutes: 30,
     description: "Record yourself during calls or practice pitches. Listen back for filler words, unclear explanations, and missed points. This is the fastest way to improve verbal communication.",
+  },
+  // ============================================
+  // VIDEO RECOMMENDATIONS
+  // ============================================
+
+  // Clear Thinking Videos
+  {
+    title: "Daniel Kahneman — Thinking, Fast and Slow (Talks at Google)",
+    type: "video" as const,
+    tier: 1,
+    skillArea: "clear_thinking",
+    estimatedMinutes: 65,
+    description: "Nobel laureate Kahneman explains System 1 vs System 2 thinking at Google. Understand the cognitive biases that silently sabotage your founder decisions every day.",
+    sourceUrl: "https://www.youtube.com/watch?v=CjVQJdIrDJ0",
+  },
+  {
+    title: "Richard Rumelt — Good Strategy Bad Strategy (LSE Talk)",
+    type: "video" as const,
+    tier: 1,
+    skillArea: "clear_thinking",
+    estimatedMinutes: 90,
+    description: "Rumelt at the London School of Economics on why most strategies are bad and how to build a real one. His kernel of strategy (diagnosis → guiding policy → coherent action) is directly applicable to startup positioning.",
+    sourceUrl: "https://www.youtube.com/watch?v=UZrTl16hZdk",
+  },
+  {
+    title: "Shane Parrish — The Art of Decision Making (The Knowledge Project)",
+    type: "video" as const,
+    tier: 1,
+    skillArea: "clear_thinking",
+    estimatedMinutes: 45,
+    description: "Farnam Street founder Shane Parrish on mental models, second-order thinking, and building a latticework of frameworks for better decisions under uncertainty.",
+    sourceUrl: "https://fs.blog/knowledge-project-podcast/",
+  },
+
+  // Data Architecture Videos
+  {
+    title: "Martin Kleppmann — Turning the Database Inside Out (Strange Loop)",
+    type: "video" as const,
+    tier: 1,
+    skillArea: "data_architecture",
+    estimatedMinutes: 45,
+    description: "Kleppmann's seminal talk on rethinking databases as immutable event logs. Changed how engineers think about data pipelines, materialized views, and stream processing.",
+    sourceUrl: "https://www.youtube.com/watch?v=fU9hR3kiOK0",
+  },
+  {
+    title: "DuckDB — The Modern Analytical Database (MotherDuck)",
+    type: "video" as const,
+    tier: 1,
+    skillArea: "data_architecture",
+    estimatedMinutes: 30,
+    description: "Why DuckDB is reshaping embedded analytics. In-process OLAP, zero dependencies, Parquet-native — the ideal engine for building fast BI tools without infrastructure overhead.",
+    sourceUrl: "https://motherduck.com/blog/duckdb-tutorial-for-beginners/",
+  },
+  {
+    title: "The dbt Viewpoint — Analytics Engineering (dbt Labs)",
+    type: "video" as const,
+    tier: 1,
+    skillArea: "data_architecture",
+    estimatedMinutes: 35,
+    description: "How dbt transformed the data stack. Treat SQL as software engineering: version control, testing, documentation, and modular transforms. The 'T' in ELT done right.",
+    sourceUrl: "https://www.getdbt.com/blog/future-of-the-modern-data-stack",
+  },
+
+  // Product Thinking Videos
+  {
+    title: "Marty Cagan — Product Is Hard (Mind the Product)",
+    type: "video" as const,
+    tier: 1,
+    skillArea: "product_thinking",
+    estimatedMinutes: 45,
+    description: "SVPG founder Cagan on why most product teams fail and what empowered teams do differently. Essential viewing on discovery, validation, and product-market fit.",
+    sourceUrl: "https://www.mindtheproduct.com/product-is-hard-by-marty-cagan/",
+  },
+  {
+    title: "April Dunford — How to Position Your Product (Positioning Workshop)",
+    type: "video" as const,
+    tier: 1,
+    skillArea: "product_thinking",
+    estimatedMinutes: 40,
+    description: "Dunford's step-by-step positioning framework: competitive alternatives → unique attributes → value → target customer → market category. Transform how customers perceive your product.",
+    sourceUrl: "https://www.aprildunford.com/",
+  },
+
+  // System Design Videos
+  {
+    title: "John Ousterhout — A Philosophy of Software Design (Talks at Google)",
+    type: "video" as const,
+    tier: 1,
+    skillArea: "system_design",
+    estimatedMinutes: 65,
+    description: "Stanford professor on deep vs shallow modules, information hiding, and managing complexity. The most actionable software design talk — directly applicable to keeping your codebase clean.",
+    sourceUrl: "https://www.youtube.com/watch?v=bmSAYlu0NcY",
+  },
+  {
+    title: "Bryan Cantrill — Platform as a Reflection of Values (Node Summit)",
+    type: "video" as const,
+    tier: 1,
+    skillArea: "system_design",
+    estimatedMinutes: 50,
+    description: "Oxide CTO on how platform design reflects organizational values. A masterclass on making deliberate engineering trade-offs and the power of transparent decision-making (RFDs).",
+    sourceUrl: "https://www.youtube.com/watch?v=Xhx970_JKX4",
+  },
+  {
+    title: "Mark Richards — Fundamentals of Software Architecture (O'Reilly)",
+    type: "video" as const,
+    tier: 1,
+    skillArea: "system_design",
+    estimatedMinutes: 55,
+    description: "Richards on architecture styles, trade-off analysis, and the -ilities. Learn to choose between microservices, event-driven, and modular monoliths for your specific constraints.",
+    sourceUrl: "https://www.developertoarchitect.com/lessons/",
+  },
+
+  // Spec Writing Videos
+  {
+    title: "Colin Bryar — Working Backwards: Amazon's Innovation Process",
+    type: "video" as const,
+    tier: 1,
+    skillArea: "spec_writing",
+    estimatedMinutes: 45,
+    description: "Former Amazon VP on the Working Backwards method: start with a press release, then FAQ, then 6-pager. Forces clarity of thought before writing a single line of code.",
+    sourceUrl: "https://www.productplan.com/glossary/amazon-prfaq/",
+  },
+
+  // Metrics Videos
+  {
+    title: "John Doerr — Why the Secret to Success is Setting the Right Goals (TED)",
+    type: "video" as const,
+    tier: 2,
+    skillArea: "metrics",
+    estimatedMinutes: 12,
+    description: "Doerr's TED talk on OKRs — the goal-setting system behind Google, Intel, and Bono. 11 minutes that will change how you set objectives and measure progress.",
+    sourceUrl: "https://www.youtube.com/watch?v=L4N1q4RNi9I",
+  },
+  {
+    title: "David Skok — SaaS Metrics 2.0 (SaaStr)",
+    type: "video" as const,
+    tier: 2,
+    skillArea: "metrics",
+    estimatedMinutes: 45,
+    description: "Matrix Partners' Skok on the SaaS metrics that actually matter: LTV/CAC, magic number, net revenue retention. The definitive framework for measuring SaaS business health.",
+    sourceUrl: "https://www.forentrepreneurs.com/saas-metrics-2/",
+  },
+
+  // Security Videos
+  {
+    title: "OWASP Top 10 — Walkthrough for Developers (2021 Edition)",
+    type: "video" as const,
+    tier: 2,
+    skillArea: "security",
+    estimatedMinutes: 40,
+    description: "Walk through the ten most critical web application security risks with practical examples. Injection, broken auth, XSS, SSRF — memorize these as your mental security checklist.",
+    sourceUrl: "https://owasp.org/www-project-top-ten/",
+  },
+  {
+    title: "AWS re:Invent — Multi-Tenant Data Isolation Patterns",
+    type: "video" as const,
+    tier: 2,
+    skillArea: "security",
+    estimatedMinutes: 50,
+    description: "AWS architects on isolation strategies for multi-tenant SaaS: pool vs silo, row-level security, IAM-based isolation, and testing strategies to guarantee tenant data separation.",
+    sourceUrl: "https://docs.aws.amazon.com/whitepapers/latest/saas-architecture-fundamentals/re-defining-multi-tenancy.html",
+  },
+
+  // Performance Videos
+  {
+    title: "Brendan Gregg — Linux Systems Performance (USENIX LISA 2019)",
+    type: "video" as const,
+    tier: 2,
+    skillArea: "performance",
+    estimatedMinutes: 50,
+    description: "Netflix performance engineer Gregg covers observability tools, methodologies, benchmarking, profiling, and tracing. The first 10 commands for any performance investigation.",
+    sourceUrl: "https://www.youtube.com/watch?v=fhBHvsi0Ql0",
+  },
+  {
+    title: "Gil Tene — How NOT to Measure Latency (Strange Loop)",
+    type: "video" as const,
+    tier: 2,
+    skillArea: "performance",
+    estimatedMinutes: 43,
+    description: "Azul CTO on why most latency measurements are wrong. The Coordinated Omission problem, why averages lie, and how to properly measure P99 — essential for building fast dashboards.",
+    sourceUrl: "https://www.youtube.com/watch?v=lJ8ydIuPFeU",
+  },
+
+  // Fundraising Videos
+  {
+    title: "Brad Feld & Jason Mendelson — Venture Deals (Techstars)",
+    type: "video" as const,
+    tier: 3,
+    skillArea: "fundraising",
+    estimatedMinutes: 60,
+    description: "Free Techstars course on term sheets, cap tables, and VC mechanics. Understand liquidation preferences, anti-dilution, and board seats before your first fundraise.",
+    sourceUrl: "https://venturedeals.techstars.com/",
+  },
+  {
+    title: "YC — How to Raise Your First Round of Funding",
+    type: "video" as const,
+    tier: 3,
+    skillArea: "fundraising",
+    estimatedMinutes: 30,
+    description: "Y Combinator's playbook for seed fundraising: when to start, how much to raise, SAFE vs priced round, and how to run an efficient process. No-nonsense startup fundraising.",
+    sourceUrl: "https://www.ycombinator.com/library/Mx-a-guide-to-seed-fundraising",
+  },
+
+  // Communication Videos
+  {
+    title: "Nancy Duarte — The Secret Structure of Great Talks (TED)",
+    type: "video" as const,
+    tier: 3,
+    skillArea: "communication",
+    estimatedMinutes: 18,
+    description: "Duarte reveals the hidden structure behind the greatest communicators in history. The 'what is' vs 'what could be' pattern applies to investor pitches, team rallies, and customer demos.",
+    sourceUrl: "https://www.ted.com/talks/nancy_duarte_the_secret_structure_of_great_talks",
+  },
+
+  // DevOps Videos
+  {
+    title: "Nicole Forsgren — The Key to High-Performance (DevOps Enterprise Summit)",
+    type: "video" as const,
+    tier: 3,
+    skillArea: "devops",
+    estimatedMinutes: 35,
+    description: "DORA creator Forsgren on the four key metrics that predict software delivery performance: lead time, deploy frequency, MTTR, and change failure rate. Research-backed engineering excellence.",
+    sourceUrl: "https://dora.dev/",
+  },
+
+  // Hiring Videos
+  {
+    title: "YC — How to Hire Your First Engineer",
+    type: "video" as const,
+    tier: 3,
+    skillArea: "hiring",
+    estimatedMinutes: 25,
+    description: "Y Combinator on when to make your first hire, what to look for, how to evaluate without a formal process, and the critical difference between hiring for a startup vs big company.",
+    sourceUrl: "https://www.ycombinator.com/library/8h-how-to-hire-your-first-engineer",
+  },
+
+  // Cloud Cost Videos
+  {
+    title: "AWS — Cloud Cost Optimization Strategies",
+    type: "video" as const,
+    tier: 2,
+    skillArea: "cloud_cost",
+    estimatedMinutes: 40,
+    description: "Practical strategies: reserved instances, spot instances, right-sizing, storage tiering, and autoscaling. Know the five levers for cutting your cloud bill by 40-60%.",
+    sourceUrl: "https://aws.amazon.com/aws-cost-management/",
   },
 ];
 
@@ -715,6 +960,9 @@ async function seed() {
         logical_reasoning: 1,
         mental_math: 1,
         estimation_fermi: 1,
+        systems_design: 1,
+        strategic_thinking: 1,
+        product_sense: 1,
       },
       rollingAccuracy: 0,
       totalSessions: 0,

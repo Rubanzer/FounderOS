@@ -4,7 +4,7 @@ export const cognitiveWarmups = pgTable("cognitive_warmups", {
   id: serial("id").primaryKey(),
   date: date("date").notNull(),
   category: text("category", {
-    enum: ["logical_reasoning", "mental_math", "estimation_fermi"],
+    enum: ["logical_reasoning", "mental_math", "estimation_fermi", "systems_design", "strategic_thinking", "product_sense"],
   }).notNull(),
   difficultyLevel: integer("difficulty_level").notNull().default(1),
   score: real("score"),

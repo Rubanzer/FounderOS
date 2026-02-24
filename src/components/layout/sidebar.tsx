@@ -2,13 +2,14 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Brain, BookOpen, PenLine, BarChart3 } from "lucide-react";
+import { Home, Brain, BookOpen, PenLine, Wind, BarChart3 } from "lucide-react";
 import { NAV_ITEMS } from "@/lib/constants";
 
 const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
   home: Home,
   brain: Brain,
   "book-open": BookOpen,
+  wind: Wind,
   "pen-line": PenLine,
   "bar-chart-3": BarChart3,
 };

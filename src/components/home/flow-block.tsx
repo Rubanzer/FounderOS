@@ -1,10 +1,11 @@
 import Link from "next/link";
-import { CheckCircle2, Circle, ArrowRight, Brain, BookOpen, PenLine } from "lucide-react";
+import { CheckCircle2, Circle, ArrowRight, Brain, BookOpen, PenLine, Wind } from "lucide-react";
 
 const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
   brain: Brain,
   "book-open": BookOpen,
   "pen-line": PenLine,
+  wind: Wind,
 };
 
 interface FlowBlockProps {
