@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getAnthropicClient } from "@/lib/ai/client";
+import { getGeminiClient } from "@/lib/ai/client";
 import { buildWarmupGeneratePrompt } from "@/lib/ai/prompts/warmup-generate";
-import { saveWarmupChallenge, calculateAdaptiveDifficulty, getRollingAccuracy } from "@/db/queries/warmups";
+import { saveWarmupChallenge, calculateAdaptiveDifficulty } from "@/db/queries/warmups";
 import type { WarmupCategory, DifficultyLevel } from "@/types/warmup";
 
 export async function POST(req: NextRequest) {
@@ -16,15 +16,14 @@ export async function POST(req: NextRequest) {
 
     const { systemPrompt, userPrompt } = buildWarmupGeneratePrompt(category, difficulty);
 
-    const client = getAnthropicClient();
-    const response = await client.messages.create({
-      model: "claude-sonnet-4-5-20250929",
-      max_tokens: 1024,
-      system: systemPrompt,
-      messages: [{ role: "user", content: userPrompt }],
+    const genAI = getGeminiClient();
+    const model = genAI.getGenerativeModel({
+      model: "gemini-2.0-flash",
+      systemInstruction: systemPrompt,
     });
 
-    const text = response.content[0].type === "text" ? response.content[0].text : "";
+    const result = await model.generateContent(userPrompt);
+    const text = result.response.text();
 
     // Parse JSON from response (handle potential markdown wrapping)
     let parsed;
@@ -59,11 +58,9 @@ export async function POST(req: NextRequest) {
       difficultyLevel: difficulty,
       hints: parsed.hints || [],
     });
-  } catch (error) {
+  } catch (error: unknown) {
     console.error("Warmup generation error:", error);
-    return NextResponse.json(
-      { error: "Failed to generate challenge" },
-      { status: 500 }
-    );
+    const message = error instanceof Error ? error.message : "Failed to generate challenge. Please try again.";
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }

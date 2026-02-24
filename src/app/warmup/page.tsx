@@ -6,7 +6,7 @@ import { ChallengeDisplay } from "@/components/warmup/challenge-display";
 import { ResponseInput } from "@/components/warmup/response-input";
 import { TimerDisplay } from "@/components/warmup/timer-display";
 import { FeedbackDisplay } from "@/components/warmup/feedback-display";
-import { Brain, Loader2, RotateCcw } from "lucide-react";
+import { Brain, Loader2, RotateCcw, AlertTriangle } from "lucide-react";
 import type { WarmupCategory } from "@/types/warmup";
 import Link from "next/link";
 
@@ -24,7 +24,10 @@ export default function WarmupPage() {
         body: JSON.stringify({ category, difficulty: 1 }),
       });
 
-      if (!res.ok) throw new Error("Failed to generate challenge");
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || `Server error (${res.status})`);
+      }
 
       const data = await res.json();
 
@@ -38,7 +41,11 @@ export default function WarmupPage() {
       store.startTimer();
     } catch (error) {
       console.error("Failed to generate challenge:", error);
-      store.reset();
+      store.setError(
+        error instanceof Error
+          ? error.message
+          : "Failed to generate challenge. Check your connection and try again."
+      );
     }
   };
 
@@ -58,7 +65,10 @@ export default function WarmupPage() {
         }),
       });
 
-      if (!res.ok) throw new Error("Failed to evaluate response");
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || `Server error (${res.status})`);
+      }
 
       const data = await res.json();
 
@@ -71,7 +81,13 @@ export default function WarmupPage() {
       });
     } catch (error) {
       console.error("Failed to evaluate:", error);
-      store.reset();
+      // Go back to challenge_active so user can retry without losing their response
+      store.backToChallengeActive();
+      store.setError(
+        error instanceof Error
+          ? error.message
+          : "Failed to evaluate your response. Try submitting again."
+      );
     }
   };
 
@@ -99,6 +115,17 @@ export default function WarmupPage() {
           </button>
         )}
       </div>
+
+      {/* Error banner (shown alongside challenge_active for eval errors) */}
+      {store.error && store.state === "challenge_active" && (
+        <div className="flex items-start gap-3 p-4 rounded-xl border border-warning/30 bg-warning/5">
+          <AlertTriangle className="w-5 h-5 text-warning shrink-0 mt-0.5" />
+          <div>
+            <p className="text-sm font-medium">Something went wrong</p>
+            <p className="text-sm text-muted mt-1">{store.error}</p>
+          </div>
+        </div>
+      )}
 
       {/* State machine rendering */}
       {store.state === "selecting_category" && (
@@ -138,6 +165,25 @@ export default function WarmupPage() {
           timeTaken={store.timeElapsed}
           onDone={() => store.reset()}
         />
+      )}
+
+      {store.state === "error" && (
+        <div className="flex flex-col items-center justify-center py-16 space-y-4">
+          <div className="p-3 rounded-full bg-danger/10">
+            <AlertTriangle className="w-8 h-8 text-danger" />
+          </div>
+          <div className="text-center space-y-2">
+            <p className="text-lg font-medium">Something went wrong</p>
+            <p className="text-sm text-muted max-w-md">{store.error}</p>
+          </div>
+          <button
+            onClick={store.reset}
+            className="flex items-center gap-2 px-5 py-2.5 rounded-lg bg-brand-600 text-white font-medium text-sm hover:bg-brand-700 transition-colors"
+          >
+            <RotateCcw className="w-4 h-4" />
+            Try Again
+          </button>
+        </div>
       )}
 
       {store.state === "complete" && (

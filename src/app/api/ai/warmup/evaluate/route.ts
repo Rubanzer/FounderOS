@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getAnthropicClient } from "@/lib/ai/client";
+import { getGeminiClient } from "@/lib/ai/client";
 import { buildWarmupEvaluatePrompt } from "@/lib/ai/prompts/warmup-evaluate";
 import { db } from "@/db";
 import { cognitiveWarmups } from "@/db/schema";
@@ -31,15 +31,14 @@ export async function POST(req: NextRequest) {
       userResponse
     );
 
-    const client = getAnthropicClient();
-    const response = await client.messages.create({
-      model: "claude-sonnet-4-5-20250929",
-      max_tokens: 1024,
-      system: systemPrompt,
-      messages: [{ role: "user", content: userPrompt }],
+    const genAI = getGeminiClient();
+    const model = genAI.getGenerativeModel({
+      model: "gemini-2.0-flash",
+      systemInstruction: systemPrompt,
     });
 
-    const text = response.content[0].type === "text" ? response.content[0].text : "";
+    const result = await model.generateContent(userPrompt);
+    const text = result.response.text();
 
     let parsed;
     try {
@@ -72,11 +71,9 @@ export async function POST(req: NextRequest) {
       explanation: parsed.explanation,
       expectedAnswer: warmup.expectedAnswer,
     });
-  } catch (error) {
+  } catch (error: unknown) {
     console.error("Warmup evaluation error:", error);
-    return NextResponse.json(
-      { error: "Failed to evaluate response" },
-      { status: 500 }
-    );
+    const message = error instanceof Error ? error.message : "Failed to evaluate response. Please try again.";
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }

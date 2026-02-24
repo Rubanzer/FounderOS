@@ -1,10 +1,10 @@
-import { NextRequest, NextResponse } from "next/server";
-import { getAnthropicClient } from "@/lib/ai/client";
+import { NextResponse } from "next/server";
+import { getGeminiClient } from "@/lib/ai/client";
 import { buildReflectionPrompt } from "@/lib/ai/prompts/reflection";
 import { getTodayWarmup } from "@/db/queries/warmups";
 import { getStreakStats } from "@/db/queries/streaks";
 
-export async function POST(req: NextRequest) {
+export async function POST() {
   try {
     // Gather today's context
     const [todayWarmup, streakStats] = await Promise.all([
@@ -23,15 +23,14 @@ export async function POST(req: NextRequest) {
 
     const { systemPrompt, userPrompt } = buildReflectionPrompt(summary);
 
-    const client = getAnthropicClient();
-    const response = await client.messages.create({
-      model: "claude-sonnet-4-5-20250929",
-      max_tokens: 512,
-      system: systemPrompt,
-      messages: [{ role: "user", content: userPrompt }],
+    const genAI = getGeminiClient();
+    const model = genAI.getGenerativeModel({
+      model: "gemini-2.0-flash",
+      systemInstruction: systemPrompt,
     });
 
-    const text = response.content[0].type === "text" ? response.content[0].text : "";
+    const result = await model.generateContent(userPrompt);
+    const text = result.response.text();
 
     let parsed;
     try {
@@ -51,9 +50,7 @@ export async function POST(req: NextRequest) {
     });
   } catch (error) {
     console.error("Reflection generation error:", error);
-    return NextResponse.json(
-      { error: "Failed to generate reflection prompt" },
-      { status: 500 }
-    );
+    const message = error instanceof Error ? error.message : "Failed to generate reflection prompt";
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }

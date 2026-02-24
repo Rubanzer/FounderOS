@@ -1,7 +1,7 @@
 "use client";
 
 import { create } from "zustand";
-import type { WarmupCategory, DifficultyLevel, WarmupState, WarmupChallenge, WarmupFeedback } from "@/types/warmup";
+import type { WarmupCategory, WarmupState, WarmupChallenge, WarmupFeedback } from "@/types/warmup";
 
 interface WarmupStore {
   state: WarmupState;
@@ -10,6 +10,7 @@ interface WarmupStore {
   selectedCategory: WarmupCategory | null;
   timeElapsed: number;
   timerInterval: ReturnType<typeof setInterval> | null;
+  error: string | null;
 
   selectCategory: (category: WarmupCategory) => void;
   setGenerating: () => void;
@@ -17,6 +18,8 @@ interface WarmupStore {
   setEvaluating: () => void;
   setFeedback: (feedback: WarmupFeedback) => void;
   setComplete: () => void;
+  setError: (message: string) => void;
+  backToChallengeActive: () => void;
   reset: () => void;
 
   startTimer: () => void;
@@ -31,24 +34,35 @@ export const useWarmupStore = create<WarmupStore>((set, get) => ({
   selectedCategory: null,
   timeElapsed: 0,
   timerInterval: null,
+  error: null,
 
   selectCategory: (category) =>
     set({ selectedCategory: category, state: "selecting_category" }),
 
-  setGenerating: () => set({ state: "generating" }),
+  setGenerating: () => set({ state: "generating", error: null }),
 
   setChallengeActive: (challenge) =>
-    set({ state: "challenge_active", challenge }),
+    set({ state: "challenge_active", challenge, error: null }),
 
   setEvaluating: () => {
     get().stopTimer();
-    set({ state: "evaluating" });
+    set({ state: "evaluating", error: null });
   },
 
   setFeedback: (feedback) =>
     set({ state: "showing_feedback", feedback }),
 
   setComplete: () => set({ state: "complete" }),
+
+  setError: (message) => {
+    get().stopTimer();
+    set({ state: "error", error: message });
+  },
+
+  backToChallengeActive: () => {
+    set({ state: "challenge_active", error: null });
+    get().startTimer();
+  },
 
   reset: () => {
     get().stopTimer();
@@ -58,6 +72,7 @@ export const useWarmupStore = create<WarmupStore>((set, get) => ({
       feedback: null,
       selectedCategory: null,
       timeElapsed: 0,
+      error: null,
     });
   },
 

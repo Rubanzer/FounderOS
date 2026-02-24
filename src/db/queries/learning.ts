@@ -123,6 +123,34 @@ export async function getUpNextItem() {
   return items[0] || null;
 }
 
+export async function getComingUpItems(limit: number = 3) {
+  // Get the next N not_started items after the up-next item
+  const tierProgress = await getProgressByTier();
+  let targetTier = 1;
+  for (const tier of [1, 2, 3]) {
+    const progress = tierProgress[tier];
+    if (progress && progress.completed < progress.total) {
+      targetTier = tier;
+      break;
+    }
+  }
+
+  const items = await db
+    .select()
+    .from(learningItems)
+    .where(
+      and(
+        eq(learningItems.tier, targetTier),
+        eq(learningItems.status, "not_started")
+      )
+    )
+    .orderBy(learningItems.skillArea, learningItems.id)
+    .limit(limit + 1); // +1 because the first one is the "up next" item
+
+  // Skip the first (that's the up-next), return the rest
+  return items.slice(1, limit + 1);
+}
+
 export async function getLearningVelocity() {
   const now = new Date();
   const weekAgo = new Date(now);

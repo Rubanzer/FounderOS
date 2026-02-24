@@ -3,6 +3,7 @@ import { pgTable, text, integer, timestamp, serial, jsonb } from "drizzle-orm/pg
 export const learningItems = pgTable("learning_items", {
   id: serial("id").primaryKey(),
   title: text("title").notNull(),
+  description: text("description"),
   type: text("type", {
     enum: ["video", "book_chapter", "podcast", "article", "course", "exercise"],
   }).notNull(),

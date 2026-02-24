@@ -8,7 +8,8 @@ export type WarmupState =
   | "challenge_active"
   | "evaluating"
   | "showing_feedback"
-  | "complete";
+  | "complete"
+  | "error";
 
 export interface WarmupChallenge {
   id: number;

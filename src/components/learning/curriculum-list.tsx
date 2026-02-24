@@ -8,9 +8,11 @@ import { TIER_LABELS, SKILL_AREA_LABELS, type SkillArea } from "@/types/learning
 interface LearningItem {
   id: number;
   title: string;
+  description: string | null;
   type: string;
   tier: number;
   skillArea: string;
+  sourceUrl: string | null;
   status: string;
   timeSpentMinutes: number | null;
   estimatedMinutes: number | null;
