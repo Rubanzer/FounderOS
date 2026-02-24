@@ -6,17 +6,14 @@ import { ChallengeDisplay } from "@/components/warmup/challenge-display";
 import { ResponseInput } from "@/components/warmup/response-input";
 import { TimerDisplay } from "@/components/warmup/timer-display";
 import { FeedbackDisplay } from "@/components/warmup/feedback-display";
-import { Brain, Loader2, RotateCcw, AlertTriangle } from "lucide-react";
+import { Brain, Loader2, RotateCcw, AlertTriangle, Zap, CheckCircle2, Trophy } from "lucide-react";
 import type { WarmupCategory } from "@/types/warmup";
 import Link from "next/link";
 
 export default function WarmupPage() {
   const store = useWarmupStore();
 
-  const handleCategorySelect = async (category: WarmupCategory) => {
-    store.selectCategory(category);
-    store.setGenerating();
-
+  const generateChallenge = async (category: WarmupCategory) => {
     try {
       const res = await fetch("/api/ai/warmup/generate", {
         method: "POST",
@@ -47,6 +44,19 @@ export default function WarmupPage() {
           : "Failed to generate challenge. Check your connection and try again."
       );
     }
+  };
+
+  const handleCategorySelect = async (category: WarmupCategory) => {
+    store.selectCategory(category);
+    store.setGenerating();
+    await generateChallenge(category);
+  };
+
+  const handleNextChallenge = async () => {
+    const category = store.selectedCategory;
+    if (!category) return;
+    store.nextChallenge();
+    await generateChallenge(category);
   };
 
   const handleSubmit = async (response: string) => {
@@ -81,13 +91,20 @@ export default function WarmupPage() {
       });
     } catch (error) {
       console.error("Failed to evaluate:", error);
-      // Go back to challenge_active so user can retry without losing their response
       store.backToChallengeActive();
       store.setError(
         error instanceof Error
           ? error.message
           : "Failed to evaluate your response. Try submitting again."
       );
+    }
+  };
+
+  const handleEndSession = () => {
+    if (store.sessionCount > 0) {
+      store.setComplete();
+    } else {
+      store.reset();
     }
   };
 
@@ -105,15 +122,22 @@ export default function WarmupPage() {
           </div>
         </div>
 
-        {store.state !== "selecting_category" && (
-          <button
-            onClick={store.reset}
-            className="flex items-center gap-1.5 text-sm text-muted hover:text-foreground transition-colors"
-          >
-            <RotateCcw className="w-4 h-4" />
-            Start Over
-          </button>
-        )}
+        <div className="flex items-center gap-3">
+          {store.sessionCount > 0 && store.state !== "complete" && store.state !== "selecting_category" && (
+            <span className="text-xs font-medium text-brand-600 bg-brand-600/10 px-2.5 py-1 rounded-full">
+              {store.sessionCount} done
+            </span>
+          )}
+          {store.state !== "selecting_category" && store.state !== "complete" && (
+            <button
+              onClick={store.reset}
+              className="flex items-center gap-1.5 text-sm text-muted hover:text-foreground transition-colors"
+            >
+              <RotateCcw className="w-4 h-4" />
+              Start Over
+            </button>
+          )}
+        </div>
       </div>
 
       {/* Error banner (shown alongside challenge_active for eval errors) */}
@@ -135,7 +159,11 @@ export default function WarmupPage() {
       {store.state === "generating" && (
         <div className="flex flex-col items-center justify-center py-16 space-y-4">
           <Loader2 className="w-8 h-8 text-brand-500 animate-spin" />
-          <p className="text-muted text-sm">Crafting your challenge...</p>
+          <p className="text-muted text-sm">
+            {store.sessionCount > 0
+              ? `Crafting challenge #${store.sessionCount + 1}...`
+              : "Crafting your challenge..."}
+          </p>
         </div>
       )}
 
@@ -163,7 +191,10 @@ export default function WarmupPage() {
         <FeedbackDisplay
           feedback={store.feedback}
           timeTaken={store.timeElapsed}
-          onDone={() => store.reset()}
+          sessionCount={store.sessionCount}
+          sessionScores={store.sessionScores}
+          onNextChallenge={handleNextChallenge}
+          onDone={handleEndSession}
         />
       )}
 
@@ -187,14 +218,81 @@ export default function WarmupPage() {
       )}
 
       {store.state === "complete" && (
-        <div className="text-center py-16 space-y-4">
-          <p className="text-lg font-medium">Warm-up complete!</p>
-          <Link
-            href="/"
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-brand-600 text-white font-medium text-sm hover:bg-brand-700 transition-colors"
-          >
-            Back to Today
-          </Link>
+        <div className="space-y-6 py-8">
+          {/* Session summary */}
+          <div className="text-center space-y-3">
+            <div className="inline-flex p-3 rounded-full bg-brand-600/10">
+              <Trophy className="w-8 h-8 text-brand-600" />
+            </div>
+            <h2 className="text-xl font-semibold">Session Complete!</h2>
+            <p className="text-muted text-sm">
+              You crushed {store.sessionCount} challenge{store.sessionCount !== 1 ? "s" : ""}
+            </p>
+          </div>
+
+          {/* Stats */}
+          {store.sessionScores.length > 0 && (
+            <div className="grid grid-cols-3 gap-4">
+              <div className="text-center p-4 rounded-xl border border-border bg-surface">
+                <div className="text-2xl font-bold text-brand-600">
+                  {store.sessionCount}
+                </div>
+                <div className="text-xs text-muted mt-1">Challenges</div>
+              </div>
+              <div className="text-center p-4 rounded-xl border border-border bg-surface">
+                <div className="text-2xl font-bold text-success">
+                  {store.sessionScores.filter((s) => s.isCorrect).length}
+                </div>
+                <div className="text-xs text-muted mt-1">Correct</div>
+              </div>
+              <div className="text-center p-4 rounded-xl border border-border bg-surface">
+                <div className="text-2xl font-bold">
+                  {Math.round(
+                    (store.sessionScores.reduce((sum, s) => sum + s.score, 0) /
+                      store.sessionScores.length) *
+                      100
+                  )}
+                  %
+                </div>
+                <div className="text-xs text-muted mt-1">Avg Score</div>
+              </div>
+            </div>
+          )}
+
+          {/* Score dots */}
+          {store.sessionScores.length > 0 && (
+            <div className="flex justify-center gap-2">
+              {store.sessionScores.map((s, i) => (
+                <div
+                  key={i}
+                  className={`flex items-center justify-center w-8 h-8 rounded-full text-xs font-medium ${
+                    s.isCorrect
+                      ? "bg-success/10 text-success border border-success/30"
+                      : "bg-danger/10 text-danger border border-danger/30"
+                  }`}
+                >
+                  {Math.round(s.score * 100)}
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Actions */}
+          <div className="flex justify-center gap-3">
+            <button
+              onClick={store.reset}
+              className="flex items-center gap-2 px-5 py-2.5 rounded-lg border border-border text-sm font-medium hover:bg-surface-hover transition-colors"
+            >
+              <Zap className="w-4 h-4" />
+              New Session
+            </button>
+            <Link
+              href="/"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-brand-600 text-white font-medium text-sm hover:bg-brand-700 transition-colors"
+            >
+              Back to Today
+            </Link>
+          </div>
         </div>
       )}
     </div>

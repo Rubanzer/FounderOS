@@ -128,6 +128,7 @@ const CURRICULUM = [
     skillArea: "data_architecture",
     estimatedMinutes: 90,
     description: "How query engines make analytics fast. Vectorized execution processes data in batches, predicate pushdown reduces data scanned, materialized views pre-compute results.",
+    sourceUrl: "https://www.cockroachlabs.com/blog/how-we-built-a-vectorized-execution-engine/",
   },
   {
     title: "Study: Semantic layers — Cube, dbt Semantic Layer, LookML",
@@ -136,7 +137,7 @@ const CURRICULUM = [
     skillArea: "data_architecture",
     estimatedMinutes: 60,
     description: "The semantic layer defines business metrics once and makes them consistent across tools. Compare Cube.dev, dbt metrics, and Looker's LookML approach.",
-    sourceUrl: "https://cube.dev/blog/semantic-layer-the-missing-piece-of-the-modern-data-stack",
+    sourceUrl: "https://atlan.com/know/semantic-layer/",
   },
   {
     title: "Study: Embeddings, vector search, text-to-SQL for BI",
@@ -145,6 +146,7 @@ const CURRICULUM = [
     skillArea: "data_architecture",
     estimatedMinutes: 60,
     description: "The AI-native analytics frontier. Understand how embeddings enable semantic search over data, and how text-to-SQL systems translate natural language to queries.",
+    sourceUrl: "https://vanna.ai/blog/ai-sql-accuracy.html",
   },
   {
     title: "Practice: Draw Business Brain's complete data flow diagram",
@@ -161,6 +163,7 @@ const CURRICULUM = [
     skillArea: "data_architecture",
     estimatedMinutes: 120,
     description: "Reverse-engineer how major BI tools work. Compare their query generation, caching strategies, permission models, and embedding approaches. Know your competitive landscape.",
+    sourceUrl: "https://www.holistics.io/blog/best-embedded-analytics-tools/",
   },
 
   // 1.3 — Problem Articulation & Spec Writing
@@ -243,6 +246,7 @@ const CURRICULUM = [
     skillArea: "product_thinking",
     estimatedMinutes: 60,
     description: "Map the four key BI personas: their goals, pain points, technical skill, and buying power. Your product must serve at least two well to gain traction.",
+    sourceUrl: "https://www.gooddata.com/blog/what-embedded-analytics/",
   },
   {
     title: "Study: Embedded analytics trend",
@@ -251,6 +255,7 @@ const CURRICULUM = [
     skillArea: "product_thinking",
     estimatedMinutes: 45,
     description: "Embedded analytics (analytics inside other apps) is the fastest-growing BI segment. Understand iframe vs SDK vs API approaches and the business model implications.",
+    sourceUrl: "https://embeddable.com/blog/what-is-embedded-analytics",
   },
   {
     title: "Study: AI-native BI — text-to-SQL, anomaly detection, conversational analytics",
@@ -259,6 +264,7 @@ const CURRICULUM = [
     skillArea: "product_thinking",
     estimatedMinutes: 60,
     description: "The next wave of BI is AI-native. Study text-to-SQL accuracy, automated anomaly detection, and conversational interfaces. This is where your product differentiates.",
+    sourceUrl: "https://www.numbersstation.ai/text-to-sql/",
   },
   {
     title: "Practice: Write Business Brain positioning statement (Dunford framework)",
@@ -303,6 +309,7 @@ const CURRICULUM = [
     skillArea: "system_design",
     estimatedMinutes: 90,
     description: "The core architectural decision for any SaaS. Compare shared-everything, schema-per-tenant, and DB-per-tenant. Understand the cost, complexity, and security trade-offs.",
+    sourceUrl: "https://learn.microsoft.com/en-us/azure/azure-sql/database/saas-tenancy-app-design-patterns",
   },
   {
     title: "Study: Query caching and materialization strategies",
@@ -311,6 +318,7 @@ const CURRICULUM = [
     skillArea: "system_design",
     estimatedMinutes: 60,
     description: "How to make dashboards load fast. Compare query result caching, materialized views, pre-aggregation (Cube), and client-side caching strategies.",
+    sourceUrl: "https://cube.dev/blog/query-caching-with-cube",
   },
   {
     title: "Study: Permission models — row-level, column-level, object-level security",
@@ -319,6 +327,7 @@ const CURRICULUM = [
     skillArea: "system_design",
     estimatedMinutes: 60,
     description: "BI tools must enforce data access controls. Understand RLS (row-level security), column masking, and object-level permissions — and how they compose in multi-tenant systems.",
+    sourceUrl: "https://www.postgresql.org/docs/current/ddl-rowsecurity.html",
   },
   {
     title: "Study: Embed architecture — iframes, SDKs, APIs, auth handoff (JWT, OAuth)",
@@ -327,6 +336,7 @@ const CURRICULUM = [
     skillArea: "system_design",
     estimatedMinutes: 60,
     description: "How to embed analytics in customer apps. Compare iframe embedding (simple but limited), SDK embedding (flexible), and API-only (most control). Auth handoff is the tricky part.",
+    sourceUrl: "https://www.yellowfinbi.com/blog/api-sdk-iframes-practical-guide-to-embedding-business-intelligence",
   },
   {
     title: "Study: Event-driven patterns for real-time dashboard updates",
@@ -335,6 +345,7 @@ const CURRICULUM = [
     skillArea: "system_design",
     estimatedMinutes: 45,
     description: "Real-time dashboards need event-driven architecture. Study WebSockets, Server-Sent Events, and polling trade-offs. Understand when real-time is worth the complexity.",
+    sourceUrl: "https://ably.com/topic/websockets-vs-sse",
   },
   {
     title: "Practice: Design Business Brain's architecture from scratch",
@@ -375,7 +386,7 @@ const CURRICULUM = [
     skillArea: "metrics",
     estimatedMinutes: 90,
     description: "Master the core SaaS metrics. Understand how MRR, ARR, churn rate, LTV, CAC, and net revenue retention relate to each other and what 'good' looks like at each stage.",
-    sourceUrl: "https://www.saastr.com/saastr-guide-to-saas-metrics/",
+    sourceUrl: "https://stripe.com/resources/more/essential-saas-metrics",
   },
   {
     title: "Practice: Build Business Brain's own metrics dashboard (dogfood)",
@@ -420,6 +431,7 @@ const CURRICULUM = [
     skillArea: "security",
     estimatedMinutes: 90,
     description: "Core security building blocks for SaaS. Encryption at rest (AES-256) and in transit (TLS), key management (KMS), audit logging for compliance, and role-based access control.",
+    sourceUrl: "https://cheatsheetseries.owasp.org/cheatsheets/Cryptographic_Storage_Cheat_Sheet.html",
   },
   {
     title: "Study: Multi-tenant data isolation — guaranteeing Tenant A never sees Tenant B",
@@ -428,6 +440,7 @@ const CURRICULUM = [
     skillArea: "security",
     estimatedMinutes: 60,
     description: "The #1 security requirement for multi-tenant SaaS. Study row-level security, connection-level isolation, and testing strategies to guarantee data separation.",
+    sourceUrl: "https://docs.aws.amazon.com/whitepapers/latest/saas-architecture-fundamentals/re-defining-multi-tenancy.html",
   },
 
   // 2.3 — Cloud Cost Engineering
@@ -438,6 +451,7 @@ const CURRICULUM = [
     skillArea: "cloud_cost",
     estimatedMinutes: 60,
     description: "Stop guessing what you're paying for. Go through your AWS/GCP/Azure bill line by line. Identify the top 5 cost drivers and understand the pricing model for each.",
+    sourceUrl: "https://aws.amazon.com/aws-cost-management/",
   },
   {
     title: "Study: Reserved instances, spot, autoscaling, right-sizing, storage tiering",
@@ -455,6 +469,7 @@ const CURRICULUM = [
     skillArea: "cloud_cost",
     estimatedMinutes: 45,
     description: "Different data warehouses charge differently. BigQuery charges per TB scanned, Snowflake per compute-second, Redshift per node-hour. Know how your users' queries affect your costs.",
+    sourceUrl: "https://cloud.google.com/bigquery/pricing",
   },
 
   // 2.4 — Testing & Quality Strategy
@@ -474,6 +489,7 @@ const CURRICULUM = [
     skillArea: "testing",
     estimatedMinutes: 60,
     description: "BI has unique testing needs. Data accuracy tests verify calculations match expected results. Performance regression catches slow queries. Permission tests verify data isolation.",
+    sourceUrl: "https://docs.getdbt.com/docs/build/data-tests",
   },
   {
     title: "Study: Data quality frameworks — Great Expectations, dbt tests, Soda",
@@ -501,6 +517,7 @@ const CURRICULUM = [
     skillArea: "performance",
     estimatedMinutes: 30,
     description: "Average latency lies. P50 is the median, P95 affects 1 in 20 users, P99 affects your most engaged users. Dashboard load times must be fast at P95+ to feel snappy.",
+    sourceUrl: "https://aerospike.com/blog/what-is-p99-latency/",
   },
   {
     title: "Study: Observability stack — Prometheus, Datadog, structured logging, OpenTelemetry",
@@ -518,6 +535,7 @@ const CURRICULUM = [
     skillArea: "performance",
     estimatedMinutes: 30,
     description: "Set concrete performance targets: dashboard initial load under 2s, chart render under 500ms, data refresh under 5s. Measure continuously and alert on regressions.",
+    sourceUrl: "https://web.dev/articles/performance-budgets-101",
   },
   {
     title: "Practice: Define SLOs for Business Brain (query latency, render time, data freshness)",
@@ -577,6 +595,7 @@ const CURRICULUM = [
     skillArea: "hiring",
     estimatedMinutes: 30,
     description: "The solo AI-native founder's dilemma. Evaluate when the bottleneck is truly headcount vs. when better AI tooling or architecture changes can extend your solo runway.",
+    sourceUrl: "https://www.ycombinator.com/library/8h-how-to-hire-your-first-engineer",
   },
   {
     title: "Practice: Write a great job description + structured interview plan",
@@ -604,6 +623,7 @@ const CURRICULUM = [
     skillArea: "devops",
     estimatedMinutes: 60,
     description: "Design a complete CI/CD pipeline: build → lint → unit test → integration test → security scan → deploy to staging → smoke test → deploy to production → monitor.",
+    sourceUrl: "https://docs.github.com/en/actions/about-github-actions/understanding-github-actions",
   },
   {
     title: "Study: Blue/green and canary deployments for zero-downtime",
@@ -612,6 +632,7 @@ const CURRICULUM = [
     skillArea: "devops",
     estimatedMinutes: 30,
     description: "Zero-downtime deployment strategies. Blue/green swaps between two identical environments. Canary gradually shifts traffic. Both prevent 'big bang' deployment failures.",
+    sourceUrl: "https://martinfowler.com/bliki/BlueGreenDeployment.html",
   },
 
   // 3.4 — Emerging Tech Radar
@@ -631,6 +652,7 @@ const CURRICULUM = [
     skillArea: "tech_radar",
     estimatedMinutes: 60,
     description: "Track the frontier: AI agents that can run analyses autonomously, text-to-SQL accuracy improvements (currently ~85%), and how semantic layers are evolving to support AI.",
+    sourceUrl: "https://arxiv.org/abs/2406.08426",
   },
   {
     title: "Study: Real-time OLAP engines — ClickHouse, Apache Doris, StarRocks",

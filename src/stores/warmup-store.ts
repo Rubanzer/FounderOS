@@ -11,6 +11,8 @@ interface WarmupStore {
   timeElapsed: number;
   timerInterval: ReturnType<typeof setInterval> | null;
   error: string | null;
+  sessionCount: number;
+  sessionScores: { score: number; isCorrect: boolean }[];
 
   selectCategory: (category: WarmupCategory) => void;
   setGenerating: () => void;
@@ -20,6 +22,7 @@ interface WarmupStore {
   setComplete: () => void;
   setError: (message: string) => void;
   backToChallengeActive: () => void;
+  nextChallenge: () => void;
   reset: () => void;
 
   startTimer: () => void;
@@ -35,6 +38,8 @@ export const useWarmupStore = create<WarmupStore>((set, get) => ({
   timeElapsed: 0,
   timerInterval: null,
   error: null,
+  sessionCount: 0,
+  sessionScores: [],
 
   selectCategory: (category) =>
     set({ selectedCategory: category, state: "selecting_category" }),
@@ -50,7 +55,12 @@ export const useWarmupStore = create<WarmupStore>((set, get) => ({
   },
 
   setFeedback: (feedback) =>
-    set({ state: "showing_feedback", feedback }),
+    set((state) => ({
+      state: "showing_feedback",
+      feedback,
+      sessionCount: state.sessionCount + 1,
+      sessionScores: [...state.sessionScores, { score: feedback.score, isCorrect: feedback.isCorrect }],
+    })),
 
   setComplete: () => set({ state: "complete" }),
 
@@ -64,6 +74,17 @@ export const useWarmupStore = create<WarmupStore>((set, get) => ({
     get().startTimer();
   },
 
+  nextChallenge: () => {
+    get().stopTimer();
+    set({
+      state: "generating",
+      challenge: null,
+      feedback: null,
+      timeElapsed: 0,
+      error: null,
+    });
+  },
+
   reset: () => {
     get().stopTimer();
     set({
@@ -73,6 +94,8 @@ export const useWarmupStore = create<WarmupStore>((set, get) => ({
       selectedCategory: null,
       timeElapsed: 0,
       error: null,
+      sessionCount: 0,
+      sessionScores: [],
     });
   },
 
